@@ -1,0 +1,179 @@
+openapi: 3.0.3
+info:
+  title: Swagger QUAD - OpenAPI 3.0
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: https://petstore3.swagger.io/api/v3
+paths:
+  /quads:
+    get:
+      tags:
+        - quad
+      summary: Get all quads
+      operationId: getAllQuads
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuadResponse'
+        '204':
+          description: No content
+    post:
+      tags:
+        - quad
+      summary: Add a new quad
+      operationId: addQuad
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuadCreateRequest'
+              example:
+                brand: "Kawasaki"
+                model: "Ninja"
+                year: 2022
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuadResponse'
+              example:
+                quadId: 1
+                brand: "Kawasaki"
+                model: "Ninja"
+                year: 2022
+        '400':
+          description: Invalid input
+
+  /quads/{quadId}:
+    get:
+      tags:
+        - quad
+      summary: Get quad by ID
+      operationId: getQuadById
+      parameters:
+        - name: quadId
+          in: path
+          required: true
+          description: ID of quad to return
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuadResponse'
+              example:
+                quadId: 1
+                brand: "Kawasaki"
+                model: "Ninja"
+                year: 2022
+        '404':
+          description: Quad not found
+    put:
+      tags:
+        - quad
+      summary: Update a quad
+      operationId: updateQuad
+      parameters:
+        - name: quadId
+          in: path
+          required: true
+          description: ID of quad to update
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuadCreateRequest'
+              example:
+                brand: "Yamaha"
+                model: "Raptor"
+                year: 2021
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuadResponse'
+              example:
+                quadId: 1
+                brand: "Yamaha"
+                model: "Raptor"
+                year: 2021
+        '404':
+          description: Quad not found
+    delete:
+      tags:
+        - quad
+      summary: Delete a quad
+      operationId: deleteQuad
+      parameters:
+        - name: quadId
+          in: path
+          required: true
+          description: ID of quad to delete
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Quad deleted
+        '404':
+          description: Quad not found
+
+components:
+  schemas:
+    Quad:
+      type: object
+      properties:
+        quadId:
+          type: integer
+          format: int64
+        brand:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+          format: int32
+    QuadCreateRequest:
+      type: object
+      properties:
+        brand:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+          format: int32
+    QuadResponse:
+      type: object
+      properties:
+        quadId:
+          type: integer
+          format: int64
+        brand:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+          format: int32
