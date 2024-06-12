@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  mysql-bookshop-db:
+    container_name: bookshop-mysql
+    image: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: bookshop
+    volumes:
+      - mysql-bookshop-data:/var/lib/mysql
+
+volumes:
+  mysql-bookshop-data:
